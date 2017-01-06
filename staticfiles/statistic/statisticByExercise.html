@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="statisticByExercise.css"/>
+
+    <script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="handlebars-v3.0.3.js"></script>
+    <script src="statisticByExercise.js"></script>
+    <title></title>
+</head>
+<body>
+
+
+<div id="tableDiv">
+<p>正在统计，请稍等...</p>
+</div>
+<div  style="text-align:center">
+    <span id="spanFirst">第一页</span> <span id="spanPre">上一页</span> <span id="spanNext">下一页</span> <span id="spanLast">最后一页</span> 第<span id="spanPageNum"></span>页/共<span id="spanTotalPage"></span>页
+</div>
+
+
+<!-- 练习题完成情况统计模板 !-->
+<script id="table-template" type="text/x-handlebars-template">
+
+    <table class="altrowstable" id="tableFirst" align="center" width="100%">
+        <caption style="font-size:20px;font-weight:bold" >练习题完成情况统计</caption>
+
+        <thead>
+        <tr>
+
+            <th id="Index" >序号</th>
+            <th id="q_number" onclick="sortAble('statisticByQnumber_result',this.id,'tableFirst',1)" style="cursor:pointer"> 题号</th>
+            <th id="email_count" onclick="sortAble('statisticByQnumber_result',this.id,'tableFirst',2)" style="cursor:pointer">己提交人数</th>
+            <th id="latest_commit"  onclick="sortAble('statisticByQnumber_result',this.id,'tableFirst',3)" style="cursor:pointer">最新提交时间</th>
+            <th >本题己题交用户</th>
+        </tr>
+        </thead>
+
+        <tbody id="table3" >
+        {{#each children}}
+        <tr  onmouseout="this.style.backgroundColor=''" onmouseover="this.style.backgroundColor='#c7e5ff'">
+            <td >{{addOne @index}}</td>
+            <td>{{q_number}}</td>
+            <td>{{email_count}}</td>
+            <td>{{latest_commit}}</td>
+            <td><a id="{{q_number}}" href="javascript:void(0)" onclick="ShowUsers(this.id)">显示用户列表</a></td>
+        </tr>
+        {{/each}}
+        </tbody>
+
+    </table>
+
+</script>
+
+
+<!-- 某个练习题情况统计模板 !-->
+<script id="user-table-template" type="text/x-handlebars-template">
+
+    <table class="altrowstable" id="alternatecolor-user" align="center" width="100%">
+
+        <caption style="font-size:20px;font-weight:bold" ><span  id="qNumber"></span>己提交用户列表<br> <a  style="font-size:11px" href="javascript:void(0)" onclick="showTemplate()">返回到"练习题完成情况统计"</a><span style="font-size:11px" id="userCount"></span></caption>
+
+        <thead>
+        <tr>
+
+            <th id="Index" >序号</th>
+            <th id="email" onclick="sortAble('statisticByQnumber_result',this.id,'alternatecolor-user',1)" style="cursor:pointer"> 用户</th>
+            <th id="commit_time" onclick="sortAble('statisticByQnumber_result',this.id,'alternatecolor-user',2)" style="cursor:pointer">最后一次提交时间</th>
+            <th id="grade"  onclick="sortAble('statisticByQnumber_result',this.id,'alternatecolor-user',3)" style="cursor:pointer">批改结果</th>
+            <th >显示该用户所提交的题</th>
+        </tr>
+        </thead>
+
+        <tbody id="table4" >
+        {{#each children}}
+        <tr  onmouseout="this.style.backgroundColor=''" onmouseover="this.style.backgroundColor='#c7e5ff'">
+            <td >{{addOne @index}}</td>
+            <td>{{email}}</td>
+            <td>{{commit_time}}</td>
+            <td>{{grade}}</td>
+            <td><a id="{{email}}" href="javascript:void(0)" onclick="ShowQNumberList(this.id)">显示该用户所提交的题列表</a> </td>
+        </tr>
+        {{/each}}
+        </tbody>
+
+    </table>
+
+</script>
+
+
+<!-- 某个用户题情况统计模板 !-->
+<script id="user-qnumber-table-template" type="text/x-handlebars-template">
+
+    <table class="altrowstable" id="alternatecolor-user-qnumber" align="center" width="100%">
+
+        <caption style="font-size:18px;font-weight:bold" ><span  id="userName"></span>己提交的题列表<br> <a  style="font-size:11px" href="javascript:void(0)" onclick="showTemplate()">返回到"练习题完成情况统计"</a><span style="font-size:11px" id="exerciseCount"></span></caption>
+
+        <thead>
+        <tr>
+
+            <th id="Index" >序号</th>
+            <th id="q_number" onclick="sortAble('statisticByEmail_result',this.id,'alternatecolor-user-qnumber',1)" style="cursor:pointer"> 题号</th>
+            <th id="commit_time" onclick="sortAble('statisticByEmail_result',this.id,'alternatecolor-user-qnumber',2)" style="cursor:pointer">最后一次提交时间</th>
+            <th id="grade"  onclick="sortAble('statisticByEmail_result',this.id,'alternatecolor-user-qnumber',3)" style="cursor:pointer">批改结果</th>
+            <th >显示本题有哪些人己提交</th>
+        </tr>
+        </thead>
+
+
+        <tbody id="table5" >
+
+        {{#each qNumberList}}
+        <tr  onmouseout="this.style.backgroundColor=''" onmouseover="this.style.backgroundColor='#c7e5ff'">
+            <td >{{addOne @index}}</td><td>{{q_number}}</td><td>{{commit_time}}</td><td>{{grade}}</td><td><a id="{{q_number}}" href="javascript:void(0)" onclick="ShowUsers(this.id)">显示本题有哪些人己提交</a> </td>
+        </tr>
+        {{/each}}
+        </tbody>
+    </table>
+
+</script>
+
+</body>
+</html>

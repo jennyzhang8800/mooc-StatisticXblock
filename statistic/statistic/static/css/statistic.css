@@ -1,0 +1,9 @@
+/* CSS for StatisticXBlock */
+
+.statistic_block .count {
+    font-weight: bold;
+}
+
+.statistic_block p {
+    cursor: pointer;
+}

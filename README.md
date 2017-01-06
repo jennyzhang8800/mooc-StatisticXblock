@@ -25,7 +25,33 @@ $ sudo mkdir -p /edx/var/edxapp/staticfiles/statistic
 $ sudo cp -r mooc-StatisticXblock/staticfiles/statistic/* /edx/var/edxapp/staticfiles/statistic/
 $ sudo chmod a+r -R /edx/var/edxapp/staticfiles/statistic/
 ```
+需要修改edx配置文件去除对.json文件的限制，做如下的操作：
+```
+sudo vi /edx/app/nginx/sites-available/cms
+```
+找到下面的内容：
+```
+# return a 403 for static files that shouldn't be
+# in the staticfiles directory
+location ~ ^/static/(?:.*)(?:\.xml|\.json|README.TXT) {
+  return 403;
+}
+```
+改为如下：
 
+```
+location ~ ^/static/(?:.*)(?:\.xml|README.TXT) {
+  return 403;
+}
+```
+对```/edx/app/nginx/sites-available/lms```也做上面的修改
+
+重启edx,重启机器:
+```
+sudo /edx/bin/supervisorctl  restart edxapp:
+sudo /edx/bin/supervisorctl  restart edxapp_worker:
+sudo reboot
+```
 ## 3. 脚本安装 (script)
 1. **建立edX与gitlab仓库的ssh连接**
 

@@ -28,8 +28,13 @@ def statisticAllByQnumber(path):
             temp["email"]=item["email"]
             temp["commit_time"]=item["commit_time"]
             temp["grade"]=item["grade"]
+            temp["graded"]=item["graded"]
             newOne["email_list"].append(temp)
             newOne["email_count"]=1
+            if(temp["graded"]=="false"):
+                newOne["un_graded_count"]=1
+            else:
+                newOne["un_graded_count"]=0
             result["children"].append(newOne)
 
         else:
@@ -39,10 +44,13 @@ def statisticAllByQnumber(path):
                     temp["email"]=item["email"]
                     temp["commit_time"]=item["commit_time"]
                     temp["grade"]=item["grade"]
+                    temp["graded"]=item["graded"]
                     item_q["email_list"].append(temp)
                     item_q["email_count"]=len(item_q["email_list"])
                     if(item_q["latest_commit"]<item["commit_time"]):
                         item_q["latest_commit"]=item["commit_time"]
+                    if(item["graded"]=="false"):
+                        item_q["un_graded_count"]=item_q["un_graded_count"]+1
     result["q_number_count"]=len(qnumberList)
     data=json.dumps(result,sort_keys=True,indent=4)
     #print data

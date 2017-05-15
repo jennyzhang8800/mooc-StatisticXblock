@@ -390,7 +390,6 @@ function sortTable(dataSource,colId,tableId, iCol,way){
  //返回+1之后的结果
  return index+1;
  });
- url_github="https://raw.githubusercontent.com/jennyzhang8800/statistic_xblock/master/statisticByQnumber_result.json";
  $.ajax({
  type : "get",
  cache : false,
@@ -533,6 +532,71 @@ function ShowQNumberList(userName){
     })
 }
 
+//显示某个题号用应的未批改用户列表
+function ShowUnGradedDetail(qNumber){
+  
+    //注册索引+1的helper
+    var handleHelper = Handlebars.registerHelper("addOne",function(index){
+ //返回+1之后的结果
+ return index+1;
+    });
+
+
+    var source   = $("#un-graded-table-template").html();
+    var template = Handlebars.compile(source);
+
+
+    user_list={};
+    user_list["q_number"]=qNumber;
+    user_list["children"]=[];
+
+    for(var i=0; i<data.children.length;i++){
+       if(data.children[i].q_number==qNumber){
+
+           for(var j=0;j<data.children[i].email_list.length;j++){
+                    if(data.children[i].email_list[j].graded=="false"){
+                         user_list["children"].push(data.children[i].email_list[j]);
+         }
+ }
+
+}
+
+ }
+
+ $("#tableDiv").html(template(user_list));
+ CurrentqNumber = document.getElementById("qNumber");
+ CurrentqNumber.innerHTML = "(题号:"+qNumber+")";
+ var userCount= document.getElementById("userCount");
+ userCount.innerHTML="&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp本题共有<span style='color:red'>"+user_list["children"].length+"</span>个用户提交"
+ altRows('alternatecolor-user');
+
+
+
+}
+
+
+
+
+//跳转到批改xblock
+function ToGrade(LinkObj){
+var email=LinkObj.id;
+var qNumber=LinkObj.name;
+var url="http://cherry.cs.tsinghua.edu.cn/courses/Tsinghua/CS101/2015_T1/courseware/65a2e6de0e7f4ec8a261df82683a2fc3/8891ccda525942a19f7897d849a21606/"+"?email="+email+",qno="+qNumber;
+window.open(url);
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
 //表格样式，自动隔行换色
 function altRows(id){
     if(document.getElementsByTagName){
@@ -549,3 +613,4 @@ function altRows(id){
         }
     }
 }
+

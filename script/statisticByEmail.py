@@ -32,15 +32,21 @@ def statistic_by_name(path):
                             grade="true"
                         else:
                             grade="false"
+                        graded_path=os.path.join(parent,str(shortname)+".graded.json")
+                        if (os.path.exists(graded_path)):
+                            graded="true"
+                        else:
+                            graded="false"
                         temp={}
                         temp["email"]=email
                         temp["commit_time"]=commit_time
                         temp["grade"]=grade
                         temp["q_number"]=shortname
+                        temp["graded"]=graded
                         name_list.append(temp)
                     except Exception as e:
                         logger.exception('ERROR:%s,path=%s' % (str(e),file_path))
-                     
+                    
         data=json.dumps(name_list,sort_keys=True,indent=4)    
     except Exception as e:
         logger.exception('ERROR:%s' % str(e))

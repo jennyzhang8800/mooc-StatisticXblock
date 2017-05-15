@@ -27,11 +27,18 @@ def statisticNewAdded(path_log,path):
                 grade="true"
             else:
                 grade="false"
+            (parent_dir,file_name)=os.path.splitext(cur_path)
+            parent_dir_all=os.path.join(conf.gitRepoPath,parent_dir)
+            if(os.path.exists(os.path.join(parent_dir_all,str(q_number)+".graded.json"))):
+                graded="true"
+            else:
+                graded="false"
             obj={}
             obj["q_number"]=str(q_number)
             obj["email"]=email
             obj["commit_time"]=commit_time
             obj["grade"]=grade
+            obj["graded"]=graded
 
             commitNewAdded.append(obj)
 #    print json.dumps(commitNewAdded)
